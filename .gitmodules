@@ -4,3 +4,6 @@
 [submodule "deps/inih"]
 	path = deps/inih
 	url = git://github.com/benhoyt/inih.git
+[submodule "deps/gyp"]
+	path = deps/gyp
+	url = https://chromium.googlesource.com/external/gyp

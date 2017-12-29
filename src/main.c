@@ -8,6 +8,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
+#include "uv.h"
 #include "ini.h"
 
 #define RED      L"\001\x1b[31m\002"
@@ -108,10 +109,17 @@ static int handler(void* user, const char* section, const char* name,
   return 1;
 }
 
+uv_loop_t *loop;
+uv_tty_t tty;
 int main(int argc, char* argv[]) {
   status s;
   struct timeval now;
   char *locale = setlocale(LC_ALL, "");
+
+  loop = uv_default_loop();
+
+  uv_tty_init(loop, &tty, 1, 0);
+  uv_tty_set_mode(&tty, UV_TTY_MODE_NORMAL);
 
   int i = 0;
   wint_t buf[1024] = { 0 };
@@ -128,7 +136,6 @@ int main(int argc, char* argv[]) {
 
   gettimeofday(&now, NULL);
   long unsigned ms_ago = tv2ms(&now) - s.mills;
-  //printf("ms_ago = %lu\n", ms_ago);
 
   const wint_t* color;
   int strike = 0;
@@ -174,7 +181,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  // fill buffer as wint_t
+  /* fill buffer as wint_t */
   i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L"%S", color);
   if (strike) {
     i += strikethrough(padded_mgdl, buf + i, sizeof(buf) - (sizeof(wint_t) * i));
@@ -183,7 +190,17 @@ int main(int argc, char* argv[]) {
   }
   i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L" %C%S", trend, NO_COLOR);
 
-  // print buffer to stdout as UTF-8
-  printf("%S\n", buf);
-  return 0;
+  /* print buffer to stdout as UTF-8 through the libuv TTY machinery
+     so that we get Windows normalization as well */
+  char output[1024] = { 0 };
+  snprintf(output, sizeof(output), "%S\n", buf);
+
+  uv_write_t req;
+  uv_buf_t buff;
+  buff.base = output;
+  buff.len = strlen(output);
+  uv_write(&req, (uv_stream_t*) &tty, &buff, 1, NULL);
+  uv_tty_reset_mode();
+
+  return uv_run(loop, UV_RUN_DEFAULT);
 }
