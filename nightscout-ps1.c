@@ -20,6 +20,7 @@
 #define BOLD     L"\001\x1b[1m\002"
 #define NO_BOLD  L"\001\x1b[22m\002"
 
+#define STRIKE 0x0336
 #define MS_PER_MINUTE (1000 * 60)
 
 /**
@@ -35,18 +36,13 @@ long unsigned tv2ms(const struct timeval *tv) {
 
 /* https://en.wikipedia.org/wiki/Strikethrough#Unicode */
 int strikethrough(const wint_t* str, wint_t* buf, size_t size) {
-  static const wint_t strike = 0x0336;
-
   int written = 0;
   int len = wcslen(str);
   for (int i = 0; i < len; i++) {
-    wint_t val = str[i];
-    //printf("%u: %C\n", val, val);
-    buf[written + 0] = val;
-    buf[written + 1] = strike;
+    buf[written + 0] = str[i];
+    buf[written + 1] = STRIKE;
     written += 2;
   }
-
   return written;
 }
 
