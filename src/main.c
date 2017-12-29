@@ -51,7 +51,7 @@ typedef struct
 {
   /* latest entry */
   int mgdl;
-  long long mills;
+  long unsigned mills;
   const char* direction;
 
   /* stale entry alarms */
