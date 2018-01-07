@@ -49,6 +49,9 @@ int strikethrough(const wint_t* str, wint_t* buf, size_t size) {
 
 typedef struct
 {
+  /* previous entry */
+  int previous_mgdl;
+
   /* latest entry */
   int mgdl;
   long unsigned mills;
@@ -75,7 +78,9 @@ static int handler(void* user, const char* section, const char* name,
   #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
   #define PARSE_BOOL strcmp(value, "true") == 0
   /* latest entry */
-  if (MATCH("latest_entry", "mgdl")) {
+  if (MATCH("previous_entry", "mgdl")) {
+      pStatus->previous_mgdl = atoi(value);
+  } else if (MATCH("latest_entry", "mgdl")) {
       pStatus->mgdl = atoi(value);
   } else if (MATCH("latest_entry", "mills")) {
       pStatus->mills = atoll(value);
@@ -188,7 +193,13 @@ int main(int argc, char* argv[]) {
   } else {
     i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L"%S", padded_mgdl);
   }
-  i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L" %C%S", trend, NO_COLOR);
+  buf[i++] = L' ';
+
+  int delta = s.mgdl - s.previous_mgdl;
+  if (delta >= 0) {
+    buf[i++] = L'+';
+  }
+  i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L"%d %C%S", delta, trend, NO_COLOR);
 
   /* print buffer to stdout as UTF-8 through the libuv TTY machinery
      so that we get Windows normalization as well */
