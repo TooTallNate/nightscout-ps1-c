@@ -11,6 +11,6 @@ install: build
 	@cp "$^" "$(PREFIX)/bin/"
 
 clean:
-	@rm -vrf $(OUTDIR)
+	@rm -vrf $(OUTDIR) packed
 
 .PHONY: clean build install
