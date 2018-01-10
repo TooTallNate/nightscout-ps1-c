@@ -130,9 +130,14 @@ int main(int argc, char* argv[]) {
   wint_t buf[1024] = { 0 };
   char latest_entry_path[1024];
 
-  struct passwd *pw = getpwuid(getuid());
+  char homedir[1024];
+  size_t size = sizeof(homedir);
+  if (uv_os_homedir(homedir, &size)) {
+    printf("Failed to read homedir\n");
+    return 1;
+  }
 
-  snprintf(latest_entry_path, sizeof(latest_entry_path), "%s/%s", pw->pw_dir, ".nightscout-latest-entry");
+  snprintf(latest_entry_path, sizeof(latest_entry_path), "%s/%s", homedir, ".nightscout-latest-entry");
 
   if (ini_parse(latest_entry_path, handler, &s) < 0) {
     printf("Can't load '%s'\n", latest_entry_path);
