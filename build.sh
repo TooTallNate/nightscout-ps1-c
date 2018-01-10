@@ -1,5 +1,4 @@
 #!/bin/bash
-
 mkdir -p packed
 version="$(git describe --tags)"
 
