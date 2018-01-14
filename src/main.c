@@ -11,15 +11,16 @@
 #include "uv.h"
 #include "ini.h"
 
+#define NO_COLOR L"\001\x1b[0m\002"
+#define BOLD     L"\001\x1b[1m\002"
+#define INVERSE  L"\001\x1b[7m\002"
+#define RED      L"\001\x1b[31m\002"
 #define RED      L"\001\x1b[31m\002"
 #define GREEN    L"\001\x1b[32m\002"
 #define YELLOW   L"\001\x1b[33m\002"
 #define BLUE     L"\001\x1b[34m\002"
 #define MAGENTA  L"\001\x1b[35m\002"
 #define CYAN     L"\001\x1b[36m\002"
-#define NO_COLOR L"\001\x1b[0m\002"
-#define BOLD     L"\001\x1b[1m\002"
-#define NO_BOLD  L"\001\x1b[22m\002"
 
 #define STRIKE 0x0336
 #define MS_PER_MINUTE (1000 * 60)
