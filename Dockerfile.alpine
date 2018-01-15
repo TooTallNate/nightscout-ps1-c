@@ -10,4 +10,4 @@ COPY . /nightscout-ps1
 
 WORKDIR /nightscout-ps1
 
-CMD make && strip ./out/Default/nightscout-ps1 && cp -v ./out/Default/nightscout-ps1 /packed/
+CMD make && cp -v ./out/Default/nightscout-ps1 /packed/

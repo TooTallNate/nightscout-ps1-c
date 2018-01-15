@@ -3,6 +3,7 @@ OUTDIR?=out
 
 build: $(OUTDIR)
 	@$(MAKE) -C $(OUTDIR)
+	@strip $(OUTDIR)/Default/nightscout-ps1
 
 $(OUTDIR): build.gyp
 	@./deps/gyp/gyp \
