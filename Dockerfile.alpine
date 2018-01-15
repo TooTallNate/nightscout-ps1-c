@@ -1,13 +1,11 @@
 # docker build -t nightscout-ps1-build:alpine -f Dockerfile.alpine .
-# docker run -it --rm -v $PWD/packed:/packed nightscout-ps1-build:alpine
+# docker run -it --rm -v $PWD:/nightscout-ps1 nightscout-ps1-build:alpine
 FROM alpine:edge
 
 RUN apk add --no-cache \
   build-base \
   python
 
-COPY . /nightscout-ps1
-
 WORKDIR /nightscout-ps1
 
-CMD make && cp -v ./out/Default/nightscout-ps1 /packed/
+CMD make build && cp -v ./out/Default/nightscout-ps1 ./packed/
