@@ -128,8 +128,7 @@ int main(int argc, char* argv[]) {
   uv_tty_set_mode(&tty, UV_TTY_MODE_NORMAL);
 
   int i = 0;
-  wint_t buf[1024] = { 0 };
-  char latest_entry_path[1024];
+  wint_t buf[100] = { 0 };
 
   char homedir[1024];
   size_t size = sizeof(homedir);
@@ -138,6 +137,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  char latest_entry_path[1024];
   snprintf(latest_entry_path, sizeof(latest_entry_path), "%s/%s", homedir, ".nightscout-latest-entry");
 
   if (ini_parse(latest_entry_path, handler, &s) < 0) {
@@ -149,11 +149,16 @@ int main(int argc, char* argv[]) {
   long unsigned ms_ago = tv2ms(&now) - s.mills;
 
   const wint_t* color;
-  int strike = 0;
   wint_t trend = L'?';
-  wint_t padded_mgdl[4] = { 0 };
-  swprintf(padded_mgdl, sizeof(padded_mgdl), L"%03d", s.mgdl);
+  int strike = 0;
+  int delta = s.mgdl - s.previous_mgdl;
 
+  /* The mg/dl and delta from previous reading are put in their own buffer
+     initially because they may be re-written with strikethrough in the end */
+  wint_t mgdl_and_delta[12] = { 0 };
+  swprintf(mgdl_and_delta, sizeof(mgdl_and_delta), L"%d %+d", s.mgdl, delta);
+
+  /* Now calculate the color, trend, and whether or not to strikeout the values */
   if (s.alarm_timeago_urgent && ms_ago > s.alarm_timeago_urgent_mins * MS_PER_MINUTE) {
     trend = L'↛';
     strike = 1;
@@ -195,17 +200,11 @@ int main(int argc, char* argv[]) {
   /* fill buffer as wint_t */
   i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L"%S", color);
   if (strike) {
-    i += strikethrough(padded_mgdl, buf + i, sizeof(buf) - (sizeof(wint_t) * i));
+    i += strikethrough(mgdl_and_delta, buf + i, sizeof(buf) - (sizeof(wint_t) * i));
   } else {
-    i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L"%S", padded_mgdl);
+    i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L"%S", mgdl_and_delta);
   }
-  buf[i++] = L' ';
-
-  int delta = s.mgdl - s.previous_mgdl;
-  if (delta >= 0) {
-    buf[i++] = L'+';
-  }
-  i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L"%d %C%S", delta, trend, NO_COLOR);
+  i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L" %C%S", trend, NO_COLOR);
 
   /* print buffer to stdout as UTF-8 through the libuv TTY machinery
      so that we get Windows normalization as well */
