@@ -157,11 +157,11 @@ int main(int argc, char* argv[]) {
   if (s.alarm_timeago_urgent && ms_ago > s.alarm_timeago_urgent_mins * MS_PER_MINUTE) {
     trend = L'↛';
     strike = 1;
-    color = RED BOLD;
+    color = INVERT RED BOLD;
   } else if (s.alarm_timeago_warn && ms_ago > s.alarm_timeago_warn_mins * MS_PER_MINUTE) {
     trend = L'↛';
     strike = 1;
-    color = YELLOW BOLD;
+    color = INVERT YELLOW BOLD;
   } else {
     if (strcmp(s.direction, "DoubleUp") == 0) {
       trend = L'⇈';
