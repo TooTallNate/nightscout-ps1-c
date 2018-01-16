@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir -p packed
-version="$(git describe --tags)"
+version="$(git describe --tags --always)"
 
 make clean
 docker build -t nightscout-ps1-build:alpine -f Dockerfile.alpine .
