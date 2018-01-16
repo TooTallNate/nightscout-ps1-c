@@ -52,6 +52,7 @@ typedef struct
 {
   /* previous entry */
   int previous_mgdl;
+  long unsigned previous_mills;
 
   /* latest entry */
   int mgdl;
@@ -78,9 +79,13 @@ static int handler(void* user, const char* section, const char* name,
 
   #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
   #define PARSE_BOOL strcmp(value, "true") == 0
-  /* latest entry */
+  /* previous entry */
   if (MATCH("previous_entry", "mgdl")) {
       pStatus->previous_mgdl = atoi(value);
+  } else if (MATCH("previous_entry", "mills")) {
+      pStatus->previous_mills = atoll(value);
+
+  /* latest entry */
   } else if (MATCH("latest_entry", "mgdl")) {
       pStatus->mgdl = atoi(value);
   } else if (MATCH("latest_entry", "mills")) {
@@ -153,10 +158,17 @@ int main(int argc, char* argv[]) {
   int strike = 0;
   int delta = s.mgdl - s.previous_mgdl;
 
+  /* If the previous reading was more than 6 minutes ago (5 minutes is "normal",
+     plus or minus some time to allow the reading to be uploaded */
+  long delta_is_stale = s.mills - s.previous_mills > (MS_PER_MINUTE * 6);
+
   /* The mg/dl and delta from previous reading are put in their own buffer
      initially because they may be re-written with strikethrough in the end */
   wint_t mgdl_and_delta[12] = { 0 };
-  swprintf(mgdl_and_delta, sizeof(mgdl_and_delta), L"%d %+d", s.mgdl, delta);
+  i += swprintf(mgdl_and_delta, sizeof(mgdl_and_delta), L"%d %+d", s.mgdl, delta);
+  if (delta_is_stale) {
+    mgdl_and_delta[i++] = L'*';
+  }
 
   /* Now calculate the color, trend, and whether or not to strikeout the values */
   if (s.alarm_timeago_urgent && ms_ago > s.alarm_timeago_urgent_mins * MS_PER_MINUTE) {
@@ -198,6 +210,7 @@ int main(int argc, char* argv[]) {
   }
 
   /* fill buffer as wint_t */
+  i = 0;
   i += swprintf(buf + i, sizeof(buf) - (sizeof(wint_t) * i), L"%S", color);
   if (strike) {
     i += strikethrough(mgdl_and_delta, buf + i, sizeof(buf) - (sizeof(wint_t) * i));
