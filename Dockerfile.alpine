@@ -8,4 +8,4 @@ RUN apk add --no-cache \
 
 WORKDIR /nightscout-ps1
 
-CMD make build && cp -v ./out/Default/nightscout-ps1 ./packed/
+CMD make build && cp -v ./out/Default/nightscout-ps1 ./packed/ && make clean
