@@ -2,7 +2,7 @@ sudo: false
 language: node_js
 node_js:
 - '8'
-before_deploy: npm run pack
+before_deploy: ./build.sh
 deploy:
   provider: releases
   api_key:
