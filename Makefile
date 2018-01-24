@@ -23,4 +23,6 @@ install: build
 clean:
 	@rm -vrf $(OUTDIR)
 
-.PHONY: clean build install
+test:
+
+.PHONY: clean build install test
