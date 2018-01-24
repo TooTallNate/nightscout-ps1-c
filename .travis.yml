@@ -1,0 +1,15 @@
+sudo: false
+language: node_js
+node_js:
+- '8'
+before_deploy: npm run pack
+deploy:
+  provider: releases
+  api_key:
+    secure: xvXOrCqkvWP1xQVDTQVES3E/BeXQ9x7WewM5UugNPqlfBs3E39XEqBA12H6qJAV8YW/Sv31d1zc/yDXfqJL85ayux6ZgG6kajYcFkhLFp4kCiqYw7l3NCyZc4Ye3OAG/JAvflZtr59OsDptIaV0ABlxAVfYn6+bIsKRYuoGpZBoe03P9ngwFim1Q3JxrLfx2wWNOItEi9xHSedvbC/KdNkZuk990aumeRZvQjYooFeGvva/UefqKdljSC5qxlSR0B6wj1v5GT2f3ughAGNukD1vvO/WGRPYy92ws8GZ6Zn/cTG4WhNSGJlGypkBvHsU9QGKTcaRHN296SB3EKMGRIiif0JUSNHG4XA/ZgiJyk87hL536IOVBz0uB48DPz7SYijxJ+QHw9lgcxnkfryUCSdcT6CRktdI8/nEkpvbUX7noQdlyJJtGnIdbDPgWEwh7MZbXG5FFwfbtCVXhzupTnl9zo9BXe8mp95HA0V1dYDnAg25FEdfkSC5vVLKUKoK0YzSu52xxIppg/dbSmH7Cy7ywO30fxVUsGDCCD84pu9OeAz82VoSjSysQKRo52LtLTvW8ZVlnkssBi2HrlE7tF6t1NxSgkzGE54Vuy4oeA8fPOlB7nB865khT69+1dnn3AMr4L4OLoOH2kMLWfo9n2MEx6wlWxeEf9IIbIYMURIE=
+  file: packed/*
+  file_glob: true
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: TooTallNate/nightscout-ps1
