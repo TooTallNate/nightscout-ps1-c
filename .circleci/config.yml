@@ -17,3 +17,8 @@ jobs:
 
       - store_artifacts:
           path: packed
+
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
