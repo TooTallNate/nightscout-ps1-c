@@ -15,5 +15,5 @@ jobs:
 
       - run: ./build.sh
 
-      - store_binaries:
+      - store_artifacts:
           path: packed
