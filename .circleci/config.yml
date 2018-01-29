@@ -10,6 +10,11 @@ jobs:
     macos:
       xcode: "8.3.3"
 
+    checkout:
+      post:
+        - git submodule sync
+        - git submodule update --init
+
     steps:
       - checkout
 
@@ -17,8 +22,3 @@ jobs:
 
       - store_artifacts:
           path: packed
-
-  checkout:
-    post:
-      - git submodule sync
-      - git submodule update --init
