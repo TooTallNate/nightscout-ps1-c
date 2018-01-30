@@ -13,13 +13,10 @@ jobs:
 
     steps:
       - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
 
       - run: ./build.sh
 
       - store_artifacts:
           path: packed
-
-checkout:
-  post:
-    - git submodule sync
-    - git submodule update --init
