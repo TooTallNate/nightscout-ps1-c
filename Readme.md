@@ -26,8 +26,12 @@ If there is no binary for your platform, or you would simply like to install
 from source, invoke the `make` command:
 
 ```bash
+# build the `nightscout-ps1` binary
 $ make
 $ ./out/Default/nightscout-ps1
+
+# install to /usr/local by default, set PREFIX for a custom dir
+$ make install
 ```
 
 ### Configure your `$PS1`
