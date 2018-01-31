@@ -23,6 +23,7 @@
         './deps/inih.gyp:inih',
         './deps/libuv/uv.gyp:libuv',
       ],
+      'defines': ['_GNU_SOURCE'],
       'sources': ['src/main.c'],
     }
   ]
