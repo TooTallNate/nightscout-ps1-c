@@ -15,7 +15,8 @@ jobs:
       - run: git submodule update --init
 
       - run: pwd && ls
-      - run: ./build.sh
+      - run: cat build.sh
+      - run: sh /project/build.sh
 
       - store_artifacts:
           path: packed
