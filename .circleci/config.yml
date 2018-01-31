@@ -2,11 +2,29 @@ version: 2
 
 jobs:
 
+  build_alpine:
+    docker:
+      - image: alpine:3.5
+
+    steps:
+      - run: apk add --no-cache build-base git python
+
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+
+      - run: ./build.sh
+
+      - store_artifacts:
+          path: packed
+
   build_linux:
     docker:
       - image: debian:jessie
 
     steps:
+      - run: apt-get update && apt-get install -y build-essential git python
+
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
@@ -34,5 +52,6 @@ workflows:
   version: 2
   build_all:
     jobs:
+      - build_alpine
       - build_linux
       - build_macos
