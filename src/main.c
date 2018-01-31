@@ -38,9 +38,10 @@ long unsigned tv2ms(const struct timeval *tv) {
 
 /* https://en.wikipedia.org/wiki/Strikethrough#Unicode */
 int strikethrough(const wint_t* str, wint_t* buf, size_t size) {
+  int i;
   int written = 0;
   int len = wcslen(str);
-  for (int i = 0; i < len; i++) {
+  for (i = 0; i < len; i++) {
     buf[written + 0] = str[i];
     buf[written + 1] = STRIKE;
     written += 2;
