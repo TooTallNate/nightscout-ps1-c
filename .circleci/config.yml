@@ -1,5 +1,13 @@
 version: 2
 
+dependencies:
+  pre:
+    - go get github.com/tcnksm/ghr
+
+compile:
+  override:
+    - ant package
+
 jobs:
 
   build_alpine:
@@ -49,3 +57,9 @@ workflows:
       - build_alpine
       - build_linux
       - build_macos
+
+deployment:
+  release:
+    tag: /(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)/
+    commands:
+      - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME packed/
