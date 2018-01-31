@@ -7,14 +7,14 @@ environment:
 platform:
   - x64
 
+build:
+  - echo build
+  - pwd
+
 install:
   - echo install
   - pwd
 
-# Post-install test scripts.
 test_script:
   - echo test
   - pwd
-
-# Don't actually build.
-build: off
