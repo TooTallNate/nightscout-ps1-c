@@ -16,7 +16,7 @@ jobs:
     working_directory: /project
 
     steps:
-      - run: apk add --no-cache build-base git python
+      - run: apk add --no-cache build-base git python ssh
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
