@@ -16,8 +16,3 @@ install:
 test_script:
   - echo test
   - pwd
-
-artifacts:
-  - path: packed/nightscout-ps1-*
-  - name: nightscout-ps1
-  - type: file
