@@ -1,0 +1,20 @@
+# http://www.appveyor.com/docs/appveyor-yml
+
+environment:
+  # Visual Studio Version
+  MSVS_VERSION: 2013
+
+platform:
+  - x64
+
+install:
+  - echo install
+  - pwd
+
+# Post-install test scripts.
+test_script:
+  - echo test
+  - pwd
+
+# Don't actually build.
+build: off
