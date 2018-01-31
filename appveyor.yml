@@ -10,6 +10,8 @@ platform:
 build: off
 
 install:
+  - git submodule sync
+  - git submodule update --init
   - echo install
   - pwd
 
