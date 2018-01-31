@@ -1,5 +1,7 @@
 # nightscout-ps1
+
 [![CircleCI](https://circleci.com/gh/TooTallNate/nightscout-ps1/tree/master.svg?style=svg)](https://circleci.com/gh/TooTallNate/nightscout-ps1/tree/master)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/1rp3biuu82e76fgq/branch/master?svg=true)](https://ci.appveyor.com/project/TooTallNate/nightscout-ps1/branch/master)
 
 <img width="245" src="https://user-images.githubusercontent.com/71256/34074189-a4a58b6e-e25e-11e7-8368-b12e684fdd04.png">
 
