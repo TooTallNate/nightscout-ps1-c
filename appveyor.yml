@@ -19,4 +19,5 @@ test_script:
 
 artifacts:
   - path: 'packed/nightscout-ps1-*'
+  - name: nightscout-ps1
   - type: file
