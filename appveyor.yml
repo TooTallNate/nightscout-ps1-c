@@ -12,6 +12,7 @@ build: off
 install:
   - git submodule sync
   - git submodule update --init
+  - python --version
   - echo install
   - pwd
 
