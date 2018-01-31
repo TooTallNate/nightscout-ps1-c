@@ -7,9 +7,7 @@ environment:
 platform:
   - x64
 
-build:
-  - echo build
-  - pwd
+build: off
 
 install:
   - echo install
@@ -18,3 +16,7 @@ install:
 test_script:
   - echo test
   - pwd
+
+artifacts:
+  - path: 'packed/nightscout-ps1-*'
+  - type: file
