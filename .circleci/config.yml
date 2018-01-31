@@ -9,15 +9,10 @@ jobs:
 
     steps:
       - run: apk add --no-cache build-base git python
-
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-
-      - run: pwd && ls
-      - run: cat build.sh
-      - run: sh /project/build.sh
-
+      - run: make dist
       - store_artifacts:
           path: packed
 
@@ -28,14 +23,10 @@ jobs:
 
     steps:
       - run: apt-get update && apt-get install -y build-essential git python
-
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-
-      - run: pwd && ls
-      - run: ./build.sh
-
+      - run: make dist
       - store_artifacts:
           path: packed
 
@@ -47,9 +38,7 @@ jobs:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-
-      - run: ./build.sh
-
+      - run: make dist
       - store_artifacts:
           path: packed
 
