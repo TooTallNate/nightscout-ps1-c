@@ -29,6 +29,7 @@ from source, invoke the `make` command:
 
 ```bash
 # build the `nightscout-ps1` binary
+$ git submodule update --init
 $ make
 $ ./out/Default/nightscout-ps1
 
