@@ -195,6 +195,8 @@ int main(int argc, char* argv[]) {
       trend = L'↓';
     } else if (strcmp(s.direction, "DoubleDown") == 0) {
       trend = L'⇊';
+    } else if (strcmp(s.direction, "NONE") == 0) {
+      trend = L'⇼';
     }
 
     if (s.mgdl > s.bg_high) {
